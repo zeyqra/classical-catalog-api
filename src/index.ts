@@ -5,7 +5,7 @@ import { parseFile } from 'music-metadata'
 
 const port = Number(process.env.PORT ?? 3000)
 const app = new Hono()
-const musicDirectory = 'D:\\Desktop\\参考\\dev'
+const musicDirectory = 'D:\\Desktop'
 
 app.get('/albums', async c => {
   const entries = await readdir(musicDirectory, {
@@ -38,20 +38,42 @@ app.get('/albums', async c => {
 app.get('/albums/:fileName', async c => {
   const fileName = c.req.param('fileName')
 
-  const metadata = await parseFile(
-    `${musicDirectory}\\${fileName}`
-  )
+  const filePath = `${musicDirectory}\\${fileName}`
+
+  const metadata = await parseFile(filePath)
+
+  const tags = metadata.native.vorbis
+
+  const getTag = (name: string) =>
+    tags?.find(tag => tag.id === name)?.value
+
+  const tracks = []
+
+  for (let i = 1; i <= 99; i++) {
+    const index = String(i).padStart(2, '0')
+
+    const work = getTag(`CUE_TRACK${index}_WORK`)
+
+    if (!work) break
+
+    tracks.push({
+      track: i,
+      composer: getTag(`CUE_TRACK${index}_COMPOSER`),
+      work,
+      performer: {
+        conductor: getTag(`CUE_TRACK${index}_CONDUCTOR`),
+        orchestra: getTag(`CUE_TRACK${index}_ORCHESTRA`),
+        soloist: getTag(`CUE_TRACK${index}_SOLOIST`),
+      },
+      year: getTag(`CUE_TRACK${index}_YEAR`),
+      movement: getTag(`CUE_TRACK${index}_MOVEMENT`),
+    })
+  }
 
   return c.json({
-    fileName,
-    title: metadata.common.title,
-    artist: metadata.common.artist,
-    album: metadata.common.album,
-    albumArtist: metadata.common.albumartist,
-    year: metadata.common.year,
-    genre: metadata.common.genre,
-    track: metadata.common.track,
-    disk: metadata.common.disk,
+    album: getTag('ALBUM'),
+    comment: getTag('COMMENT'),
+    tracks,
   })
 })
 
