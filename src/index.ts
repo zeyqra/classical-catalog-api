@@ -2,6 +2,19 @@ import { readdir } from 'node:fs/promises'
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { parseFile } from 'music-metadata'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+import path from 'node:path'
+
+const execFileAsync = promisify(execFile)
+
+const metaflacPath = path.join(
+  process.cwd(),
+  'tools',
+  'metaflac',
+  'metaflac.exe'
+)
+const metaflacDir = path.dirname(metaflacPath)
 
 const port = Number(process.env.PORT ?? 3000)
 const app = new Hono()
@@ -55,7 +68,7 @@ app.get('/albums/:fileName', async c => {
       track: i,
       composer: getTag(`CUE_TRACK${index}_COMPOSER`),
       work,
-      performer: {
+      performers: {
         conductor: getTag(`CUE_TRACK${index}_CONDUCTOR`),
         orchestra: getTag(`CUE_TRACK${index}_ORCHESTRA`),
         soloist: getTag(`CUE_TRACK${index}_SOLOIST`),
@@ -84,17 +97,24 @@ app.get('/albums/:fileName', async c => {
     if (!work) {
       work = {
         title: track.work,
-        recording: {
-          conductor: track.performer.conductor,
-          orchestra: track.performer.orchestra,
-          soloist: track.performer.soloist,
-          year: track.year,
+        performers: {
+          conductor: track.performers.conductor,
+          orchestra: track.performers.orchestra,
+          soloist: track.performers.soloist,
         },
+        year: track.year,
         movements: [],
       }
       composer.works.push(work)
     }
-    work.movements.push(track.movement)
+    if (track.movement) {
+      work.movements.push({
+        title: track.movement,
+        track: track.track,
+      })
+    } else {
+      work.track = track.track
+    }
   }
 
   return c.json({
@@ -102,6 +122,8 @@ app.get('/albums/:fileName', async c => {
     comment: getTag('COMMENT'),
     composers,
     coverUrl: `/albums/${encodeURIComponent(fileName)}/cover`,
+    tracks,
+    tags,
   })
 })
 
@@ -119,6 +141,85 @@ app.get('/albums/:fileName/cover', async c => {
       'Content-Type': picture.format,
     },
   })
+})
+
+app.put('/albums/:fileName', async c => {
+  const fileName = c.req.param('fileName')
+  const filePath = `${musicDirectory}\\${fileName}`
+  const data = await c.req.json()
+
+  const args: string[] = [
+    '--remove-tag=ALBUM',
+    '--remove-tag=COMMENT',
+  ]
+
+  for (const track of data.tracks) {
+    const index = String(track.track).padStart(2, '0')
+    const prefix = `CUE_TRACK${index}`
+
+    args.push(
+      `--remove-tag=${prefix}_COMPOSER`,
+      `--remove-tag=${prefix}_WORK`,
+      `--remove-tag=${prefix}_CONDUCTOR`,
+      `--remove-tag=${prefix}_ORCHESTRA`,
+      `--remove-tag=${prefix}_SOLOIST`,
+      `--remove-tag=${prefix}_YEAR`,
+      `--remove-tag=${prefix}_MOVEMENT`
+    )
+  }
+
+  if (data.title) {
+    args.push(`--set-tag=ALBUM=${data.title}`)
+  }
+
+  if (data.comment) {
+    args.push(`--set-tag=COMMENT=${data.comment}`)
+  }
+
+  for (const track of data.tracks) {
+    const index = String(track.track).padStart(2, '0')
+    const prefix = `CUE_TRACK${index}`
+
+    if (track.composer) {
+      args.push(`--set-tag=${prefix}_COMPOSER=${track.composer}`)
+    }
+
+    if (track.work) {
+      args.push(`--set-tag=${prefix}_WORK=${track.work}`)
+    }
+
+    if (track.performers?.conductor) {
+      args.push(
+        `--set-tag=${prefix}_CONDUCTOR=${track.performers.conductor}`
+      )
+    }
+
+    if (track.performers?.orchestra) {
+      args.push(
+        `--set-tag=${prefix}_ORCHESTRA=${track.performers.orchestra}`
+      )
+    }
+
+    if (track.performers?.soloist) {
+      args.push(
+        `--set-tag=${prefix}_SOLOIST=${track.performers.soloist}`
+      )
+    }
+
+    if (track.year) {
+      args.push(`--set-tag=${prefix}_YEAR=${track.year}`)
+    }
+
+    if (track.movement) {
+      args.push(`--set-tag=${prefix}_MOVEMENT=${track.movement}`)
+    }
+  }
+
+  args.push(filePath)
+
+  await execFileAsync(metaflacPath, args)
+
+  return c.json({ success: true })
 })
 
 serve({
