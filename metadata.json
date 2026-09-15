@@ -1,0 +1,377 @@
+{
+  "format": {
+    "tagTypes": [
+      "vorbis"
+    ],
+    "trackInfo": [],
+    "container": "FLAC",
+    "codec": "FLAC",
+    "hasAudio": true,
+    "lossless": true,
+    "numberOfChannels": 2,
+    "bitsPerSample": 16,
+    "sampleRate": 44100,
+    "duration": 4752.333333333333,
+    "tool": "reference libFLAC 1.2.1 20070917",
+    "bitrate": 550572.4940730869,
+    "hasVideo": false
+  },
+  "native": {
+    "vorbis": [
+      {
+        "id": "ALBUM",
+        "value": "Beethoven: Symphony No.3 »Eroica« · Schubert: Symphony No.8 »Unfinished«"
+      },
+      {
+        "id": "ALBUMARTIST",
+        "value": "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker"
+      },
+      {
+        "id": "ARTIST",
+        "value": "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker"
+      },
+      {
+        "id": "COMMENT",
+        "value": "内容介绍\\《贝多芬'英雄'舒伯特'未完成'》《第三“英雄”交响曲》是一部伟大的作品，到处洋溢着战斗的气息和自由的理念，是贝多芬留给后人的最宝贵的精神财富。乐曲本来要呈献给拿破仑，却因拿破仑即位称帝，贝多芬便愤而改了原题为“献给拿破仑·波拿巴”的题词，重写了“为纪念一位伟大的人物而写的英雄交响曲”的扉页。\\\\通常被人们称为“未完成交响曲”的《第八交响曲》，不仅是舒伯特交响曲中最杰出的作品，也是浪漫主义音乐的绝世佳作。独特的作曲手法是它成为世界上最受欢迎的交响曲之一的重要原因。\\\\德奥传统指挥大师旺德领衔北德广播交响乐团和柏林爱乐乐团为这两部伟大作品做出了经典的诠释，他们的演奏沉稳流畅，使这张唱片成为当今最富德国厚重音色的唯一名演名版，也成为《日本唱片艺术》特选版本。\\\\●贝多芬“为纪念一位伟大的人物而写的英雄交响曲”和舒伯特完美无缺的“未完成”交响曲\\●当今最富德国厚重音色的唯一版本，绝对睥睨现有任何版本\\\\音乐史上两部伟大交响曲 《日本唱片艺术》特选。北德广播交响乐团 柏林爱乐乐团／君特·旺德 指挥。\\\\曲目\\LUDWIG VAN BEETHOVEN\\路德维希·范·贝多芬(1770-1827)\\\\Symphony No.3 in E Flat, Op.55 “Eroica”\\降E大调第三交响曲，“英雄”，作品55\\01 I. Allegro con brio 第一乐章：灿烂的快板 (17:34)\\02 II. Marcia funebre: Adagio assai 第二乐章：葬礼进行曲，甚慢板 (15:31)\\03 III. Scherzo: Allegro vivace 第三乐章：诙谐曲，活泼的快板 (05:46)\\04 IV. Finale: Allegro molto 第四乐章：终曲，甚快板 (11:40)\\\\FRANZ SCHUBERT\\弗朗茨·舒伯特(1797-1828)\\\\Symphony No.8 in B Minor, D.759 “Unfinished”\\B小调第八交响曲，“未完成”，作品759\\05 I. Allegro moderato 第一乐章：中庸的快板 (15:26)\\06 II. Andante con moto 第二乐章：稍快的行板 (12:43)\\(79:13)\\\\指挥：君特·旺德／北德广播交响乐团1-4 柏林爱乐乐团5-6\\录音：1989、95年"
+      },
+      {
+        "id": "COMPOSER",
+        "value": "Ludwig van Beethoven"
+      },
+      {
+        "id": "CUE_TRACK01_MOMENT",
+        "value": "1. Allegro con brio"
+      },
+      {
+        "id": "CUE_TRACK01_PERFORMER",
+        "value": "Günter Wand/NDR Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK01_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 »Eroica«"
+      },
+      {
+        "id": "CUE_TRACK02_MOMENT",
+        "value": "2. Marcia funebre: Adagio assai"
+      },
+      {
+        "id": "CUE_TRACK02_PERFORMER",
+        "value": "Günter Wand/NDR Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK02_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 »Eroica«"
+      },
+      {
+        "id": "CUE_TRACK03_MOMENT",
+        "value": "3. Scherzo: Allegro vivace"
+      },
+      {
+        "id": "CUE_TRACK03_PERFORMER",
+        "value": "Günter Wand/NDR Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK03_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 »Eroica«"
+      },
+      {
+        "id": "CUE_TRACK04_MOMENT",
+        "value": "4. Finale: Allegro molto"
+      },
+      {
+        "id": "CUE_TRACK04_PERFORMER",
+        "value": "Günter Wand/NDR Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK04_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 »Eroica«"
+      },
+      {
+        "id": "CUE_TRACK05_MOMENT",
+        "value": "1. Allegro moderato"
+      },
+      {
+        "id": "CUE_TRACK05_PERFORMER",
+        "value": "Günter Wand/Berliner Philharmoniker"
+      },
+      {
+        "id": "CUE_TRACK05_WORK",
+        "value": "Symphony No.8 in B Minor, D.759  »Unfinished«"
+      },
+      {
+        "id": "CUE_TRACK06_MOMENT",
+        "value": "2. Andante con moto"
+      },
+      {
+        "id": "CUE_TRACK06_PERFORMER",
+        "value": "Günter Wand/Berliner Philharmoniker"
+      },
+      {
+        "id": "CUE_TRACK06_WORK",
+        "value": "Symphony No.8 in B Minor, D.759  »Unfinished«"
+      },
+      {
+        "id": "CUESHEET",
+        "value": "REM GENRE Classical\r\nREM DATE 1985, 1995\r\nREM DISCID 46129006\r\nREM COMMENT 内容介绍\\《贝多芬'英雄'舒伯特'未完成'》《第三“英雄”交响曲》是一部伟大的作品，到处洋溢着战斗的气息和自由的理念，是贝多芬留给后人的最宝贵的精神财富。乐曲本来要呈献给拿破仑，却因拿破仑即位称帝，贝多芬便愤而改了原题为“献给拿破仑·波拿巴”的题词，重写了“为纪念一位伟大的人物而写的英雄交响曲”的扉页。\\\\通常被人们称为“未完成交响曲”的《第八交响曲》，不仅是舒伯特交响曲中最杰出的作品，也是浪漫主义音乐的绝世佳作。独特的作曲手法是它成为世界上最受欢迎的交响曲之一的重要原因。\\\\德奥传统指挥大师旺德领衔北德广播交响乐团和柏林爱乐乐团为这两部伟大作品做出了经典的诠释，他们的演奏沉稳流畅，使这张唱片成为当今最富德国厚重音色的唯一名演名版，也成为《日本唱片艺术》特选版本。\\\\●贝多芬“为纪念一位伟大的人物而写的英雄交响曲”和舒伯特完美无缺的“未完成”交响曲\\●当今最富德国厚重音色的唯一版本，绝对睥睨现有任何版本\\\\音乐史上两部伟大交响曲 《日本唱片艺术》特选。北德广播交响乐团 柏林爱乐乐团／君特·旺德 指挥。\\\\曲目\\LUDWIG VAN BEETHOVEN\\路德维希·范·贝多芬(1770-1827)\\\\Symphony No.3 in E Flat, Op.55 “Eroica”\\降E大调第三交响曲，“英雄”，作品55\\01 I. Allegro con brio 第一乐章：灿烂的快板 (17:34)\\02 II. Marcia funebre: Adagio assai 第二乐章：葬礼进行曲，甚慢板 (15:31)\\03 III. Scherzo: Allegro vivace 第三乐章：诙谐曲，活泼的快板 (05:46)\\04 IV. Finale: Allegro molto 第四乐章：终曲，甚快板 (11:40)\\\\FRANZ SCHUBERT\\弗朗茨·舒伯特(1797-1828)\\\\Symphony No.8 in B Minor, D.759 “Unfinished”\\B小调第八交响曲，“未完成”，作品759\\05 I. Allegro moderato 第一乐章：中庸的快板 (15:26)\\06 II. Andante con moto 第二乐章：稍快的行板 (12:43)\\(79:13)\\\\指挥：君特·旺德／北德广播交响乐团1-4 柏林爱乐乐团5-6\\录音：1989、95年\r\nPERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\nTITLE \"Beethoven: Symphony No.3 »Eroica« · Schubert: Symphony No.8 »Unfinished«\"\r\nFILE \"019 贝多芬 英雄舒伯特 未完成.flac\" WAVE\r\n  TRACK 01 AUDIO\r\n    TITLE \"Symphony No.3 in E-Flat, Op.55 »Eroica« - 1. Allegro con brio\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 01 00:00:00\r\n  TRACK 02 AUDIO\r\n    TITLE \"Symphony No.3 in E-Flat, Op.55 »Eroica« - 2. Marcia funebre: Adagio assai\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 00 17:34:01\r\n    INDEX 01 17:44:47\r\n  TRACK 03 AUDIO\r\n    TITLE \"Symphony No.3 in E-Flat, Op.55 »Eroica« - 3. Scherzo: Allegro vivace\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 00 33:16:13\r\n    INDEX 01 33:19:12\r\n  TRACK 04 AUDIO\r\n    TITLE \"Symphony No.3 in E-Flat, Op.55 »Eroica« - 4. Finale: Allegro molto\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 01 39:05:00\r\n  TRACK 05 AUDIO\r\n    TITLE \"Symphony No.8 in B Minor, D.759  »Unfinished« - 1. Allegro moderato\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 00 50:45:66\r\n    INDEX 01 50:54:65\r\n  TRACK 06 AUDIO\r\n    TITLE \"Symphony No.8 in B Minor, D.759  »Unfinished« - 2. Andante con moto\"\r\n    PERFORMER \"Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker\"\r\n    INDEX 00 66:21:31\r\n    INDEX 01 66:29:25\r\n"
+      },
+      {
+        "id": "DATE",
+        "value": "1985, 1995"
+      },
+      {
+        "id": "DISCID",
+        "value": "46129006"
+      },
+      {
+        "id": "GENRE",
+        "value": "Classical"
+      },
+      {
+        "id": "TRACKTOTAL",
+        "value": "6"
+      },
+      {
+        "id": "ALBUM",
+        "value": "Beethoven Symphony No.3 »Eroica« & Schubert Symphony No.8 »Unfinished«"
+      },
+      {
+        "id": "COMMENT",
+        "value": "RCA Red Seal Best 100"
+      },
+      {
+        "id": "CUE_TRACK01_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 \"Eroica\""
+      },
+      {
+        "id": "CUE_TRACK01_MOVEMENT",
+        "value": "I. Allegro con brio"
+      },
+      {
+        "id": "CUE_TRACK01_COMPOSER",
+        "value": "Ludwig van Beethoven"
+      },
+      {
+        "id": "CUE_TRACK01_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK01_ORCHESTRA",
+        "value": "NDR-Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK01_YEAR",
+        "value": "1989"
+      },
+      {
+        "id": "CUE_TRACK02_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 \"Eroica\""
+      },
+      {
+        "id": "CUE_TRACK02_MOVEMENT",
+        "value": "II. Marcia funebre : Adagio assai"
+      },
+      {
+        "id": "CUE_TRACK02_COMPOSER",
+        "value": "Ludwig van Beethoven"
+      },
+      {
+        "id": "CUE_TRACK02_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK02_ORCHESTRA",
+        "value": "NDR-Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK02_YEAR",
+        "value": "1989"
+      },
+      {
+        "id": "CUE_TRACK03_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 \"Eroica\""
+      },
+      {
+        "id": "CUE_TRACK03_MOVEMENT",
+        "value": "III. Scherzo : Allegro vivace"
+      },
+      {
+        "id": "CUE_TRACK03_COMPOSER",
+        "value": "Ludwig van Beethoven"
+      },
+      {
+        "id": "CUE_TRACK03_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK03_ORCHESTRA",
+        "value": "NDR-Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK03_YEAR",
+        "value": "1989"
+      },
+      {
+        "id": "CUE_TRACK04_WORK",
+        "value": "Symphony No.3 in E-Flat, Op.55 \"Eroica\""
+      },
+      {
+        "id": "CUE_TRACK04_MOVEMENT",
+        "value": "IV. Finale : Allegro molto"
+      },
+      {
+        "id": "CUE_TRACK04_COMPOSER",
+        "value": "Ludwig van Beethoven"
+      },
+      {
+        "id": "CUE_TRACK04_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK04_ORCHESTRA",
+        "value": "NDR-Sinfonieorchester"
+      },
+      {
+        "id": "CUE_TRACK04_YEAR",
+        "value": "1989"
+      },
+      {
+        "id": "CUE_TRACK05_WORK",
+        "value": "Symphony No.8 in B Minor, D.759 \"Unfinished\""
+      },
+      {
+        "id": "CUE_TRACK05_MOVEMENT",
+        "value": "I. Allegro moderato"
+      },
+      {
+        "id": "CUE_TRACK05_COMPOSER",
+        "value": "Franz Schubert"
+      },
+      {
+        "id": "CUE_TRACK05_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK05_ORCHESTRA",
+        "value": "Berliner Philharmoniker"
+      },
+      {
+        "id": "CUE_TRACK05_YEAR",
+        "value": "1995"
+      },
+      {
+        "id": "CUE_TRACK06_WORK",
+        "value": "Symphony No.8 in B Minor, D.759 \"Unfinished\""
+      },
+      {
+        "id": "CUE_TRACK06_MOVEMENT",
+        "value": "II. Andante con moto"
+      },
+      {
+        "id": "CUE_TRACK06_COMPOSER",
+        "value": "Franz Schubert"
+      },
+      {
+        "id": "CUE_TRACK06_CONDUCTOR",
+        "value": "Günter Wand"
+      },
+      {
+        "id": "CUE_TRACK06_ORCHESTRA",
+        "value": "Berliner Philharmoniker"
+      },
+      {
+        "id": "CUE_TRACK06_YEAR",
+        "value": "1995"
+      },
+      {
+        "id": "METADATA_BLOCK_PICTURE",
+        "value": {
+          "type": "Cover (front)",
+          "format": "image/jpeg",
+          "description": "",
+          "width": 618,
+          "height": 618,
+          "colour_depth": 24,
+          "indexed_color": 0,
+          "data": ...
+        }
+      },
+      {
+        "id": "METADATA_BLOCK_PICTURE",
+        "value": {
+          "type": "Cover (back)",
+          "format": "image/jpeg",
+          "description": "",
+          "width": 800,
+          "height": 690,
+          "colour_depth": 24,
+          "indexed_color": 0,
+          "data": ...
+        }
+      }
+    ]
+  },
+  "quality": {
+    "warnings": []
+  },
+  "common": {
+    "track": {
+      "no": null,
+      "of": 6
+    },
+    "disk": {
+      "no": null,
+      "of": null
+    },
+    "movementIndex": {
+      "no": null,
+      "of": null
+    },
+    "album": "Beethoven Symphony No.3 »Eroica« & Schubert Symphony No.8 »Unfinished«",
+    "albumartists": [
+      "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker"
+    ],
+    "albumartist": "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker",
+    "artists": [
+      "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker"
+    ],
+    "artist": "Günter Wand/NDR Sinfonieorchester/Berliner Philharmoniker",
+    "comment": [
+      {
+        "text": "内容介绍\\《贝多芬'英雄'舒伯特'未完成'》《第三“英雄”交响曲》是一部伟大的作品，到处洋溢着战斗的气息和自由的理念，是贝多芬留给后人的最宝贵的精神财富。乐曲本来要呈献给拿破仑，却因拿破仑即位称帝，贝多芬便愤而改了原题为“献给拿破仑·波拿巴”的题词，重写了“为纪念一位伟大的人物而写的英雄交响曲”的扉页。\\\\通常被人们称为“未完成交响曲”的《第八交响曲》，不仅是舒伯特交响曲中最杰出的作品，也是浪漫主义音乐的绝世佳作。独特的作曲手法是它成为世界上最受欢迎的交响曲之一的重要原因。\\\\德奥传统指挥大师旺德领衔北德广播交响乐团和柏林爱乐乐团为这两部伟大作品做出了经典的诠释，他们的演奏沉稳流畅，使这张唱片成为当今最富德国厚重音色的唯一名演名版，也成为《日本唱片艺术》特选版本。\\\\●贝多芬“为纪念一位伟大的人物而写的英雄交响曲”和舒伯特完美无缺的“未完成”交响曲\\●当今最富德国厚重音色的唯一版本，绝对睥睨现有任何版本\\\\音乐史上两部伟大交响曲 《日本唱片艺术》特选。北德广播交响乐团 柏林爱乐乐团／君特·旺德 指挥。\\\\曲目\\LUDWIG VAN BEETHOVEN\\路德维希·范·贝多芬(1770-1827)\\\\Symphony No.3 in E Flat, Op.55 “Eroica”\\降E大调第三交响曲，“英雄”，作品55\\01 I. Allegro con brio 第一乐章：灿烂的快板 (17:34)\\02 II. Marcia funebre: Adagio assai 第二乐章：葬礼进行曲，甚慢板 (15:31)\\03 III. Scherzo: Allegro vivace 第三乐章：诙谐曲，活泼的快板 (05:46)\\04 IV. Finale: Allegro molto 第四乐章：终曲，甚快板 (11:40)\\\\FRANZ SCHUBERT\\弗朗茨·舒伯特(1797-1828)\\\\Symphony No.8 in B Minor, D.759 “Unfinished”\\B小调第八交响曲，“未完成”，作品759\\05 I. Allegro moderato 第一乐章：中庸的快板 (15:26)\\06 II. Andante con moto 第二乐章：稍快的行板 (12:43)\\(79:13)\\\\指挥：君特·旺德／北德广播交响乐团1-4 柏林爱乐乐团5-6\\录音：1989、95年"
+      },
+      {
+        "text": "RCA Red Seal Best 100"
+      }
+    ],
+    "composer": [
+      "Ludwig van Beethoven"
+    ],
+    "year": 1985,
+    "date": "1985, 1995",
+    "genre": [
+      "Classical"
+    ],
+    "picture": [
+      {
+        "type": "Cover (front)",
+        "format": "image/jpeg",
+        "description": "",
+        "width": 618,
+        "height": 618,
+        "colour_depth": 24,
+        "indexed_color": 0,
+        "data": ...
+      },
+      {
+        "type": "Cover (back)",
+        "format": "image/jpeg",
+        "description": "",
+        "width": 800,
+        "height": 690,
+        "colour_depth": 24,
+        "indexed_color": 0,
+        "data": ...
+      }
+    ]
+  }
+}

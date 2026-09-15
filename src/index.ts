@@ -52,48 +52,55 @@ app.get('/albums', async c => {
 app.get('/albums/:fileName', async c => {
   const fileName = c.req.param('fileName')
   const filePath = `${musicDirectory}\\${fileName}`
+
   const metadata = await parseFile(filePath)
   const tags = metadata.native.vorbis
 
   const getTag = (name: string) =>
-    tags?.find(tag => tag.id === name && tag.value)?.value
+    tags?.find(tag => tag.id === name)?.value ?? ''
+
+  const trackTotal = metadata.common.track.of ?? 0
 
   const tracks = []
-  for (let i = 1; i <= 99; i++) {
+
+  for (let i = 1; i <= trackTotal; i++) {
     const index = String(i).padStart(2, '0')
-    const work = getTag(`CUE_TRACK${index}_WORK`)
-    if (!work) break
+    const prefix = `CUE_TRACK${index}`
 
     tracks.push({
       track: i,
-      composer: getTag(`CUE_TRACK${index}_COMPOSER`),
-      work,
+      composer: getTag(`${prefix}_COMPOSER`),
+      work: getTag(`${prefix}_WORK`),
       performers: {
-        conductor: getTag(`CUE_TRACK${index}_CONDUCTOR`),
-        orchestra: getTag(`CUE_TRACK${index}_ORCHESTRA`),
-        soloist: getTag(`CUE_TRACK${index}_SOLOIST`),
+        conductor: getTag(`${prefix}_CONDUCTOR`),
+        orchestra: getTag(`${prefix}_ORCHESTRA`),
+        soloist: getTag(`${prefix}_SOLOIST`),
       },
-      year: getTag(`CUE_TRACK${index}_YEAR`),
-      movement: getTag(`CUE_TRACK${index}_MOVEMENT`),
+      year: getTag(`${prefix}_YEAR`),
+      movement: getTag(`${prefix}_MOVEMENT`),
     })
   }
 
   const composers = []
+
   for (const track of tracks) {
     let composer = composers.find(
       item => item.name === track.composer
     )
+
     if (!composer) {
       composer = {
         name: track.composer,
         works: [],
       }
+
       composers.push(composer)
     }
 
     let work = composer.works.find(
       item => item.title === track.work
     )
+
     if (!work) {
       work = {
         title: track.work,
@@ -105,16 +112,14 @@ app.get('/albums/:fileName', async c => {
         year: track.year,
         movements: [],
       }
+
       composer.works.push(work)
     }
-    if (track.movement) {
-      work.movements.push({
-        title: track.movement,
-        track: track.track,
-      })
-    } else {
-      work.track = track.track
-    }
+
+    work.movements.push({
+      title: track.movement,
+      track: track.track,
+    })
   }
 
   return c.json({
@@ -123,6 +128,7 @@ app.get('/albums/:fileName', async c => {
     composers,
     coverUrl: `/albums/${encodeURIComponent(fileName)}/cover`,
     tracks,
+    metadata,
     tags,
   })
 })
