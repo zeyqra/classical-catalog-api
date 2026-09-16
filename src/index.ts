@@ -14,46 +14,190 @@ const metaflacPath = path.join(
   'metaflac',
   'metaflac.exe'
 )
-const metaflacDir = path.dirname(metaflacPath)
 
 const port = Number(process.env.PORT ?? 3000)
 const app = new Hono()
 const musicDirectory = 'D:\\Desktop\\参考'
 
-app.get('/albums', async c => {
-  const entries = await readdir(musicDirectory, {
+type TrackIndex = {
+  track: number
+  composer: string
+  work: string
+  performers: string[]
+}
+
+type AlbumIndex = {
+  fileName: string
+  filePath: string
+  series: string
+  album: string
+  tracks: TrackIndex[]
+}
+
+const albumIndex: AlbumIndex[] = []
+
+const readAlbum = async (
+  series: string,
+  fileName: string,
+  filePath: string
+) => {
+  const metadata = await parseFile(filePath)
+  const tags = metadata.native.vorbis
+
+  const getTag = (name: string) =>
+    tags?.find(tag => tag.id === name)?.value ?? ''
+
+  const trackTotal = metadata.common.track.of ?? 0
+
+  const tracks: TrackIndex[] = []
+
+  for (let i = 1; i <= trackTotal; i++) {
+    const index = String(i).padStart(2, '0')
+    const prefix = `CUE_TRACK${index}`
+
+    const performers = [
+      getTag(`${prefix}_CONDUCTOR`),
+      getTag(`${prefix}_ORCHESTRA`),
+      getTag(`${prefix}_SOLOIST`),
+    ].filter(Boolean)
+
+    tracks.push({
+      track: i,
+      composer: getTag(`${prefix}_COMPOSER`),
+      work: getTag(`${prefix}_WORK`),
+      performers,
+    })
+  }
+
+  return {
+    fileName,
+    filePath,
+    series,
+    album: metadata.common.album ?? '',
+    tracks,
+  }
+}
+
+const buildIndex = async () => {
+  albumIndex.length = 0
+
+  const seriesEntries = await readdir(musicDirectory, {
     withFileTypes: true,
   })
-  const files = entries
-    .filter(
-      entry =>
-        entry.isFile() &&
-        entry.name.toLowerCase().endsWith('.flac')
-    )
+
+  for (const seriesEntry of seriesEntries) {
+    if (!seriesEntry.isDirectory()) continue
+
+    const series = seriesEntry.name
+    const seriesPath = path.join(musicDirectory, series)
+
+    const files = await readdir(seriesPath, {
+      withFileTypes: true,
+    })
+
+    for (const file of files) {
+      if (
+        !file.isFile() ||
+        !file.name.toLowerCase().endsWith('.flac')
+      ) {
+        continue
+      }
+
+      const filePath = path.join(seriesPath, file.name)
+
+      const album = await readAlbum(series, file.name, filePath)
+
+      albumIndex.push(album)
+    }
+  }
+}
+
+await buildIndex()
+
+app.get('/series', c => {
+  const series = [
+    ...new Set(albumIndex.map(album => album.series)),
+  ]
+
+  return c.json(series)
+})
+
+app.get('/albums', c => {
+  const series = c.req.query('series')
+
+  const albums = albumIndex
+    .filter(album => !series || album.series === series)
+    .sort((a, b) => a.fileName.localeCompare(b.fileName))
+
+  const composerMap = new Map<string, Set<string>>()
+  const performerMap = new Map<string, Set<string>>()
+
+  for (const album of albums) {
+    for (const track of album.tracks) {
+      const workKey = `${album.fileName}|${track.work}`
+
+      if (track.composer) {
+        if (!composerMap.has(track.composer)) {
+          composerMap.set(track.composer, new Set())
+        }
+
+        if (track.work) {
+          composerMap.get(track.composer)!.add(workKey)
+        }
+      }
+
+      for (const performer of track.performers) {
+        if (!performerMap.has(performer)) {
+          performerMap.set(performer, new Set())
+        }
+
+        if (track.work) {
+          performerMap.get(performer)!.add(workKey)
+        }
+      }
+    }
+  }
+
+  const composers = [...composerMap.entries()]
+    .map(([name, workKeys]) => ({
+      name,
+      workCount: workKeys.size,
+    }))
     .sort((a, b) => a.name.localeCompare(b.name))
 
-  const result = await Promise.all(
-    files.map(async ({ name }) => {
-      const metadata = await parseFile(
-        `${musicDirectory}\\${name}`
-      )
+  const performers = [...performerMap.entries()]
+    .map(([name, workKeys]) => ({
+      name,
+      workCount: workKeys.size,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 
-      return {
-        fileName: name,
-        album: metadata.common.album,
-        coverUrl: `/albums/${encodeURIComponent(name)}/cover`,
-      }
-    })
-  )
-
-  return c.json(result)
+  return c.json({
+    albums: albums.map(album => ({
+      fileName: album.fileName,
+      album: album.album,
+      series: album.series,
+      coverUrl: `/albums/${encodeURIComponent(album.fileName)}/cover`,
+    })),
+    stats: {
+      composers,
+      performers,
+    },
+  })
 })
 
 app.get('/albums/:fileName', async c => {
   const fileName = c.req.param('fileName')
-  const filePath = `${musicDirectory}\\${fileName}`
 
-  const metadata = await parseFile(filePath)
+  const album = albumIndex.find(
+    album => album.fileName === fileName
+  )
+
+  if (!album) {
+    return c.notFound()
+  }
+
+  const metadata = await parseFile(album.filePath)
   const tags = metadata.native.vorbis
 
   const getTag = (name: string) =>
@@ -128,16 +272,23 @@ app.get('/albums/:fileName', async c => {
     composers,
     coverUrl: `/albums/${encodeURIComponent(fileName)}/cover`,
     tracks,
-    metadata,
-    tags,
   })
 })
 
 app.get('/albums/:fileName/cover', async c => {
   const fileName = c.req.param('fileName')
-  const filePath = `${musicDirectory}\\${fileName}`
-  const metadata = await parseFile(filePath)
+
+  const album = albumIndex.find(
+    album => album.fileName === fileName
+  )
+
+  if (!album) {
+    return c.notFound()
+  }
+
+  const metadata = await parseFile(album.filePath)
   const picture = metadata.common.picture?.[0]
+
   if (!picture) {
     return c.notFound()
   }
@@ -151,7 +302,15 @@ app.get('/albums/:fileName/cover', async c => {
 
 app.put('/albums/:fileName', async c => {
   const fileName = c.req.param('fileName')
-  const filePath = `${musicDirectory}\\${fileName}`
+
+  const album = albumIndex.find(
+    album => album.fileName === fileName
+  )
+
+  if (!album) {
+    return c.notFound()
+  }
+
   const data = await c.req.json()
 
   const args: string[] = [
@@ -221,9 +380,18 @@ app.put('/albums/:fileName', async c => {
     }
   }
 
-  args.push(filePath)
+  args.push(album.filePath)
 
   await execFileAsync(metaflacPath, args)
+
+  const updatedAlbum = await readAlbum(
+    album.series,
+    album.fileName,
+    album.filePath
+  )
+
+  const index = albumIndex.indexOf(album)
+  albumIndex[index] = updatedAlbum
 
   return c.json({ success: true })
 })
