@@ -23,9 +23,8 @@ type TrackIndex = {
   track: number
   composer: string
   work: string
-  performers: string[]
+  performers: {}
 }
-
 type AlbumIndex = {
   fileName: string
   filePath: string
@@ -33,9 +32,7 @@ type AlbumIndex = {
   album: string
   tracks: TrackIndex[]
 }
-
 const albumIndex: AlbumIndex[] = []
-
 const readAlbum = async (
   series: string,
   fileName: string,
@@ -43,23 +40,23 @@ const readAlbum = async (
 ) => {
   const metadata = await parseFile(filePath)
   const tags = metadata.native.vorbis
+  const trackTotal = metadata.common.track.of ?? 0
 
   const getTag = (name: string) =>
     tags?.find(tag => tag.id === name)?.value ?? ''
 
-  const trackTotal = metadata.common.track.of ?? 0
-
   const tracks: TrackIndex[] = []
-
   for (let i = 1; i <= trackTotal; i++) {
     const index = String(i).padStart(2, '0')
     const prefix = `CUE_TRACK${index}`
 
-    const performers = [
-      getTag(`${prefix}_CONDUCTOR`),
-      getTag(`${prefix}_ORCHESTRA`),
-      getTag(`${prefix}_SOLOIST`),
-    ].filter(Boolean)
+    const performers = {
+      conductor:
+        getTag(`${prefix}_CONDUCTOR`) || getTag('CONDUCTOR'),
+      orchestra:
+        getTag(`${prefix}_ORCHESTRA`) || getTag('ORCHESTRA'),
+      soloist: getTag(`${prefix}_SOLOIST`) || getTag('SOLOIST'),
+    }
 
     tracks.push({
       track: i,
@@ -90,7 +87,6 @@ const buildIndex = async () => {
 
     const series = seriesEntry.name
     const seriesPath = path.join(musicDirectory, series)
-
     const files = await readdir(seriesPath, {
       withFileTypes: true,
     })
@@ -99,78 +95,75 @@ const buildIndex = async () => {
       if (
         !file.isFile() ||
         !file.name.toLowerCase().endsWith('.flac')
-      ) {
+      )
         continue
-      }
 
       const filePath = path.join(seriesPath, file.name)
-
       const album = await readAlbum(series, file.name, filePath)
 
       albumIndex.push(album)
     }
   }
 }
-
 await buildIndex()
 
 app.get('/series', c => {
   const series = [
     ...new Set(albumIndex.map(album => album.series)),
   ]
-
   return c.json(series)
 })
 
 app.get('/albums', c => {
   const series = c.req.query('series')
-
+  const composer = c.req.query('composer')
   const albums = albumIndex
-    .filter(album => !series || album.series === series)
+    .filter(
+      album =>
+        (!series || album.series === series) &&
+        (!composer ||
+          album.tracks.find(t => t.composer === composer))
+    )
     .sort((a, b) => a.fileName.localeCompare(b.fileName))
 
-  const composerMap = new Map<string, Set<string>>()
-  const performerMap = new Map<string, Set<string>>()
+  const composerSet = new Set()
+  const performerSetObj = {
+    conductor: new Set(),
+    orchestra: new Set(),
+    soloist: new Set(),
+  }
 
   for (const album of albums) {
     for (const track of album.tracks) {
-      const workKey = `${album.fileName}|${track.work}`
-
       if (track.composer) {
-        if (!composerMap.has(track.composer)) {
-          composerMap.set(track.composer, new Set())
-        }
-
-        if (track.work) {
-          composerMap.get(track.composer)!.add(workKey)
+        if (!composerSet.has(track.composer)) {
+          composerSet.add(track.composer)
         }
       }
 
-      for (const performer of track.performers) {
-        if (!performerMap.has(performer)) {
-          performerMap.set(performer, new Set())
-        }
-
-        if (track.work) {
-          performerMap.get(performer)!.add(workKey)
+      for (const [performerType, performer] of Object.entries(
+        track.performers
+      )) {
+        const performerSet = performerSetObj[performerType]
+        if (!performerSet.has(performer)) {
+          performerSet.add(performer)
         }
       }
     }
   }
 
-  const composers = [...composerMap.entries()]
-    .map(([name, workKeys]) => ({
-      name,
-      workCount: workKeys.size,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name))
+  const composers = [...composerSet].sort((a, b) =>
+    a.localeCompare(b)
+  )
 
-  const performers = [...performerMap.entries()]
-    .map(([name, workKeys]) => ({
-      name,
-      workCount: workKeys.size,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name))
+  const performers = Object.fromEntries(
+    Object.entries(performerSetObj).map(
+      ([performerType, performerSet]) => [
+        performerType,
+        [...performerSet].sort((a, b) => a.localeCompare(b)),
+      ]
+    )
+  )
 
   return c.json({
     albums: albums.map(album => ({
