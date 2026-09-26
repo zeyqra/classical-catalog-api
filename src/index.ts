@@ -23,7 +23,11 @@ type TrackIndex = {
   track: number
   composer: string
   work: string
-  performers: {}
+  performers: {
+    conductor?: string
+    orchestra?: string
+    soloist?: string
+  }
 }
 type AlbumIndex = {
   fileName: string
@@ -31,6 +35,12 @@ type AlbumIndex = {
   series: string
   album: string
   tracks: TrackIndex[]
+  composers: Set<string>
+  performers: {
+    conductors?: Set<string>
+    orchestras?: Set<string>
+    soloists?: Set<string>
+  }
 }
 const albumIndex: AlbumIndex[] = []
 const readAlbum = async (
@@ -46,23 +56,37 @@ const readAlbum = async (
     tags?.find(tag => tag.id === name)?.value ?? ''
 
   const tracks: TrackIndex[] = []
+  const albumComposers = new Set<string>()
+  const albumConductors = new Set<string>()
+  const albumOrchestras = new Set<string>()
+  const albumSoloists = new Set<string>()
+
   for (let i = 1; i <= trackTotal; i++) {
     const index = String(i).padStart(2, '0')
     const prefix = `CUE_TRACK${index}`
 
-    const performers = {
-      conductor:
-        getTag(`${prefix}_CONDUCTOR`) || getTag('CONDUCTOR'),
-      orchestra:
-        getTag(`${prefix}_ORCHESTRA`) || getTag('ORCHESTRA'),
-      soloist: getTag(`${prefix}_SOLOIST`) || getTag('SOLOIST'),
-    }
+    const composer = getTag(`${prefix}_COMPOSER`)
+    const conductor =
+      getTag(`${prefix}_CONDUCTOR`) || getTag('CONDUCTOR')
+    const orchestra =
+      getTag(`${prefix}_ORCHESTRA`) || getTag('ORCHESTRA')
+    const soloist =
+      getTag(`${prefix}_SOLOIST`) || getTag('SOLOIST')
+
+    albumComposers.add(composer)
+    albumConductors.add(conductor)
+    albumOrchestras.add(orchestra)
+    albumSoloists.add(soloist)
 
     tracks.push({
       track: i,
-      composer: getTag(`${prefix}_COMPOSER`),
+      composer,
       work: getTag(`${prefix}_WORK`),
-      performers,
+      performers: {
+        conductor,
+        orchestra,
+        soloist,
+      },
     })
   }
 
@@ -72,6 +96,12 @@ const readAlbum = async (
     series,
     album: metadata.common.album ?? '',
     tracks,
+    composers: albumComposers,
+    performers: {
+      conductors: albumConductors,
+      orchestras: albumOrchestras,
+      soloists: albumSoloists,
+    },
   }
 }
 
@@ -117,64 +147,64 @@ app.get('/series', c => {
 app.get('/albums', c => {
   const series = c.req.query('series')
   const composer = c.req.query('composer')
+  const conductor = c.req.query('conductors')
+  const orchestra = c.req.query('orchestra')
+  const soloist = c.req.query('soloists')
+
   const albums = albumIndex
     .filter(
       album =>
         (!series || album.series === series) &&
-        (!composer ||
-          album.tracks.find(t => t.composer === composer))
+        (!composer || album.composers.has(composer)) &&
+        (!conductor ||
+          album.performers.conductors.has(conductor)) &&
+        (!orchestra ||
+          album.performers.orchestras.has(orchestra)) &&
+        (!soloist || album.performers.soloists.has(soloist))
     )
     .sort((a, b) => a.fileName.localeCompare(b.fileName))
 
-  const composerSet = new Set()
-  const performerSetObj = {
-    conductor: new Set(),
-    orchestra: new Set(),
-    soloist: new Set(),
-  }
+  const composers = new Set<string>()
+  const conductors = new Set<string>()
+  const orchestras = new Set<string>()
+  const soloists = new Set<string>()
 
   for (const album of albums) {
-    for (const track of album.tracks) {
-      if (track.composer) {
-        if (!composerSet.has(track.composer)) {
-          composerSet.add(track.composer)
-        }
-      }
-
-      for (const [performerType, performer] of Object.entries(
-        track.performers
-      )) {
-        const performerSet = performerSetObj[performerType]
-        if (!performerSet.has(performer)) {
-          performerSet.add(performer)
-        }
-      }
+    for (const composer of album.composers) {
+      composers.add(composer)
+    }
+    for (const conductor of album.performers.conductors) {
+      conductors.add(conductor)
+    }
+    for (const orchestra of album.performers.orchestras) {
+      orchestras.add(orchestra)
+    }
+    for (const soloist of album.performers.soloists) {
+      soloists.add(soloist)
     }
   }
 
-  const composers = [...composerSet].sort((a, b) =>
-    a.localeCompare(b)
-  )
-
-  const performers = Object.fromEntries(
-    Object.entries(performerSetObj).map(
-      ([performerType, performerSet]) => [
-        performerType,
-        [...performerSet].sort((a, b) => a.localeCompare(b)),
-      ]
-    )
-  )
-
   return c.json({
     albums: albums.map(album => ({
-      fileName: album.fileName,
-      album: album.album,
-      series: album.series,
+      ...album,
       coverUrl: `/albums/${encodeURIComponent(album.fileName)}/cover`,
     })),
     stats: {
-      composers,
-      performers,
+      composers: [...composers].sort((a, b) =>
+        a.localeCompare(b)
+      ),
+
+      performers: {
+        conductors: [...conductors].sort((a, b) =>
+          a.localeCompare(b)
+        ),
+        orchestras: [...orchestras].sort((a, b) =>
+          a.localeCompare(b)
+        ),
+        soloists: [...soloists].sort((a, b) =>
+          a.localeCompare(b)
+        ),
+      },
     },
   })
 })
